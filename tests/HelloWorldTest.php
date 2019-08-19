@@ -2,7 +2,7 @@
 
 class HelloWorldTest extends PHPUnit_Framework_TestCase {
     public function testGreeting() {
-        $greeting = "Hi World";
+        $greeting = "Hello World";
         $requiredGreeting = "Hello World";
 
         $this->assertEquals($greeting, $requiredGreeting);
