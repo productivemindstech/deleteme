@@ -2,3 +2,6 @@ language: php
 php: 7.2
 before_script:
     - composer install
+    - wget http://chromedriver.storage.googleapis.com/76.0.3809.126/chromedriver_linux64.zip
+    - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/
+    - export CHROME_BIN=chromium-browser
