@@ -2,3 +2,7 @@ language: php
 php: 7.2
 before_script:
   - composer install
+addons:
+  sauce_connect:
+    username: "pubinator"
+    access_key: "580f062b-af5a-4982-85dc-4619f66a2987"
