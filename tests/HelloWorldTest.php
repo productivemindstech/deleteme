@@ -1,8 +1,9 @@
 <?php
-require_once('./vendor/autoload.php');
 
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
+
+require_once('vendor/autoload.php');
 
 
 class HelloWorldTest extends PHPUnit_Framework_TestCase {
@@ -25,7 +26,7 @@ class HelloWorldTest extends PHPUnit_Framework_TestCase {
 //        print_r($caps, true);
 
 
-        $web_driver = RemoteWebDriver::create(
+        $web_driver = Remote\RemoteWebDriver::create(
             "https://pubinator:580f062b-af5a-4982-85dc-4619f66a2987@ondemand.saucelabs.com:443/wd/hub",
             array("platform"=>"Windows 7", "browserName"=>"chrome", "version"=>"40")
         );
