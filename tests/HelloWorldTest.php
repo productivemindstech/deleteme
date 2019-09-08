@@ -1,9 +1,43 @@
 <?php
 
+require_once 'vendor/autoload.php';
+
+define('SAUCE_HOST','pubinator:580f062b-af5a-4982-85dc-4619f66a2987@ondemand.saucelabs.com');
+
+class WebTest extends PHPUnit_Extensions_Selenium2TestCase {
+    protected $start_url = 'http://saucelabs.com/test/guinea-pig';
+
+    public static $browsers = array(
+        array(
+            'browserName' => 'firefox',
+            'host' => SAUCE_HOST,
+            'port' => 80,
+            'desiredCapabilities' => array(
+                'version' => '15',
+                'platform'=> 'Windows 2012'
+            )
+        )
+    );
+
+    protected function setUp()
+    {
+        $this->setBrowserUrl('http://localhost');
+    }
+
+    public function testTitle()
+    {
+        $this->url($this->start_url);
+        $this->assertContains("I am a page title", $this->title());
+    }
+}
+?>
+
+
+<?php /*
+require_once('vendor/autoload.php');
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
 
-require_once('vendor/autoload.php');
 
 
 class HelloWorldTest extends PHPUnit_Framework_TestCase {
@@ -32,13 +66,12 @@ class HelloWorldTest extends PHPUnit_Framework_TestCase {
         );
         $web_driver->get("https://saucelabs.com/test/guinea-pig");
 
-        /*
-          Test actions here...
-        */
+        //Test actions here...
+
 
         $web_driver->quit();
 
 
         $this->assertEquals(false, true);
     }
-}
+} */
