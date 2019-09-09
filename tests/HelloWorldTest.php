@@ -36,6 +36,11 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase {
         $this->setBrowserUrl('http://localhost');
     }
 
+    public function testEnv()
+    {
+        $this->assertEquals(env('TRAVIS_JOB_NUMBER'), 'yoyoyoyo');
+    }
+
     public function testTitle()
     {
         $this->url($this->start_url);
