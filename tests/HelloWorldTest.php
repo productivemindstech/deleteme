@@ -1,7 +1,6 @@
 <?php
 
 require_once 'vendor/autoload.php';
-
 define('SAUCE_HOST','pubinator:580f062b-af5a-4982-85dc-4619f66a2987@ondemand.saucelabs.com');
 
 class WebTest extends PHPUnit_Extensions_Selenium2TestCase {
@@ -13,11 +12,12 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase {
             'host' => SAUCE_HOST,
             'port' => 80,
             'desiredCapabilities' => array(
-                'version' => '15',
-                'platform'=> 'Windows 2012'
+                'version' => '69.0',
+                'platform'=> 'Windows 10'
             )
         )
     );
+
 
     protected function setUp()
     {
