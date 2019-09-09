@@ -38,14 +38,14 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase {
 
     public function testEnv()
     {
-        $this->assertEquals(env('TRAVIS_JOB_NUMBER'), 'yoyoyoyo');
+        $this->assertEquals($_ENV['TRAVIS_JOB_NUMBER'], 'yoyoyoyo');
     }
 
-    public function testTitle()
-    {
-        $this->url($this->start_url);
-        $this->assertContains("I am a page title", $this->title());
-    }
+//    public function testTitle()
+//    {
+//        $this->url($this->start_url);
+//        $this->assertContains("I am a page title", $this->title());
+//    }
 
     public function tearDown()
     {
