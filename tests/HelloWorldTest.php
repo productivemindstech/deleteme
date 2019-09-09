@@ -33,7 +33,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase {
 
     protected function setUp()
     {
-        $this->setBrowserUrl('');
+        $this->setBrowserUrl('http://localhost');
     }
 
     public function testTitle()
