@@ -38,7 +38,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase {
 
     public function testEnv()
     {
-        $this->assertEquals($_ENV['TRAVIS_JOB_NUMBER'], 'yoyoyoyo');
+        $this->assertEquals(getenv('TRAVIS_JOB_NUMBER'), 'yoyoyoyo');
     }
 
 //    public function testTitle()
