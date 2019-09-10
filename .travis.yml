@@ -1,14 +1,8 @@
 language: php
-
-matrix:
-  include:
-    - php: "7.2"
-      addons:
-        sauce_connect:
-          username: "pubinator"
-          access_key: "580f062b-af5a-4982-85dc-4619f66a2987"
-
+php: 7.2
 before_script:
-  - chmod +x tests/run.sh
-  - tests/run.sh
   - composer install
+addons:
+  sauce_connect:
+    username: "pubinator"
+    access_key: "580f062b-af5a-4982-85dc-4619f66a2987"
