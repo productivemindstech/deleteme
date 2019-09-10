@@ -2,53 +2,46 @@
 
 require_once 'vendor/autoload.php';
 define('SAUCE_HOST','pubinator:580f062b-af5a-4982-85dc-4619f66a2987@ondemand.saucelabs.com');
-define('TRAVIS_JOB_NUMBER', getenv('TRAVIS_JOB_NUMBER'));
 
 class WebTest extends PHPUnit_Extensions_Selenium2TestCase {
 
-    //protected $start_url = 'http://saucelabs.com/test/guinea-pig';
-
-    protected $start_url = 'http://localhost';
+    //protected $start_url = 'https://saucelabs.com';
+    protected $start_url = "http://localhost:9000/";
 
     public static $browsers = [
         [
             'browserName' => 'firefox',
             'host' => SAUCE_HOST,
-            'tunnel-identifier' => TRAVIS_JOB_NUMBER,
-            'port' => 80,
-            'desiredCapabilities' => [
-                'version' => '69.0',
-                'platform'=> 'Windows 10'
-            ]
+            //'tunnel-identifier' => TRAVIS_JOB_NUMBER,
+            'port' => 80
+            //'desiredCapabilities' => [
+                //'version' => '69.0',
+                //'platform'=> 'Windows 10'
+            //]
         ],
         [
             'browserName' => 'chrome',
             'host' => SAUCE_HOST,
-            'tunnel-identifier' => TRAVIS_JOB_NUMBER,
-            'port' => 80,
-            'desiredCapabilities' => [
-                'version' => '69.0',
-                'platform'=> 'Windows 10'
-            ]
+            //'tunnel-identifier' => TRAVIS_JOB_NUMBER,
+            'port' => 80
+            //'desiredCapabilities' => [
+                //'version' => '69.0',
+                //'platform'=> 'Windows 10'
+            //]
         ]
     ];
 
 
     protected function setUp()
     {
-        $this->setBrowserUrl('http://localhost');
+        $this->setBrowserUrl($this->start_url);
     }
 
-    public function testEnv()
+    public function testIndex()
     {
-        $this->assertEquals(getenv('TRAVIS_JOB_NUMBER'), 'yoyoyoyo');
+	    $this->url($this->start_url);
+	    $this->assertContains("index", $this->title());
     }
-
-//    public function testTitle()
-//    {
-//        $this->url($this->start_url);
-//        $this->assertContains("I am a page title", $this->title());
-//    }
 
     public function tearDown()
     {

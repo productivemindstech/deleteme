@@ -3,7 +3,7 @@
   <title>index</title>
 </head>
 <body>
-Hello world! html
+Hello world! PHP
 </body>
 </html>
 
