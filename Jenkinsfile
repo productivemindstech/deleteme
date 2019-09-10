@@ -15,7 +15,8 @@ sudo mv composer.phar /usr/local/bin/composer
 - php-xml
 - php-mbstring
 
-4. Most testings - because of the nature of some web browsers - will fail at loading localhost pages, so it is recommended to point an alternative name like "dev" to "127.0.0.1" in the OS hosts file
+4. In Jenkins administration under Sauce labs settings, it has to be passed the following argument:
+--no-ssl-bump-domains localhost
 
 */
 

@@ -14,7 +14,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase {
             'browserName' => 'firefox',
             'host' => SAUCE_HOST,
             //'tunnel-identifier' => TRAVIS_JOB_NUMBER,
-            'port' => 80
+            'port' => 80,
 	    'desiredCapabilities' => [
 		'version' => '69.0',
 		'platform'=> 'Windows 10'
@@ -24,7 +24,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase {
             'browserName' => 'chrome',
             'host' => SAUCE_HOST,
             //'tunnel-identifier' => TRAVIS_JOB_NUMBER,
-            'port' => 80
+            'port' => 80,
 	    'desiredCapabilities' => [
 		'version' => '69.0',
 		'platform'=> 'Windows 10'
