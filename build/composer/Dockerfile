@@ -1,0 +1,7 @@
+
+FROM composer:latest
+
+WORKDIR /var/www/site
+CMD composer update
+
+
