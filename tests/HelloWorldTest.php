@@ -12,25 +12,25 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase {
     public static $browsers = [
         [
             'browserName' => 'firefox',
-	    'host' => SAUCE_HOST,
-	    'tunnel-identifier' => TRAVIS_JOB_NUMBER,
-	    'port' => 80,
-	    'local' => false,
-	    'desiredCapabilities' => [
-		'version' => '69.0',
-		'platform'=> 'Windows 10'
-	    ]
+			'host' => SAUCE_HOST,
+			'tunnel-identifier' => TRAVIS_JOB_NUMBER,
+			'port' => 80,
+			'local' => false,
+			'desiredCapabilities' => [
+			'version' => '69.0',
+			'platform'=> 'Windows 10'
+			]
         ],
         [
             'browserName' => 'chrome',
-	    'host' => SAUCE_HOST,
-	    'tunnel-identifier' => TRAVIS_JOB_NUMBER,
-            'port' => 80,
-	    'local' => false,
-	    'desiredCapabilities' => [
-		'version' => '69.0',
-		'platform'=> 'Windows 10'
-	    ]
+			'host' => SAUCE_HOST,
+			'tunnel-identifier' => TRAVIS_JOB_NUMBER,
+				'port' => 80,
+			'local' => false,
+			'desiredCapabilities' => [
+			'version' => '69.0',
+			'platform'=> 'Windows 10'
+			]
         ]
     ];
 

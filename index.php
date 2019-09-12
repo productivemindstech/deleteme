@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>dusssssde</title>
+  <title><?php echo $_SERVER['HTTP_USER_AGENT']; ?></title>
 </head>
 <body>
 Hello world! PHP
