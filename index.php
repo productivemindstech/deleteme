@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>index</title>
+  <title>dude</title>
 </head>
 <body>
 Hello world! PHP

@@ -43,7 +43,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase {
     public function testIndex()
     {
 	    $this->url($this->start_url);
-	    $this->assertContains("index", $this->title());
+	    $this->assertContains("dusssssde", $this->title());
     }
 
     public function tearDown()
