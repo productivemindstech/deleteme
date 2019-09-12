@@ -1,4 +1,3 @@
-
 <?php
   // Setup: $ php composer.phar require facebook/webdriver
  

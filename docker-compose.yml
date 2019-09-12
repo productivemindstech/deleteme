@@ -1,0 +1,156 @@
+#
+# composer file to bring up a tvtropes development environment
+#
+version: '2'
+
+# edit the .env file before executing this docker-compse.yml file; do not
+# edit this file, but rather the .env file for project-specific settings
+
+services:
+    #
+    # nginx container
+    # it copies the nginx/nginx.conf file to the container
+    # it will connect to the app container to server the content
+    # and link to the PHP container to execute PHP
+    nginx:
+        container_name: ${COMPOSE_PROJECT_NAME}-nginx-cont
+        build: ./build/nginx/
+        expose:
+            - 80
+        ports:
+            - ${COMPOSE_NGINX_EXTERNAL_HTTP_PORT}:80
+            - ${COMPOSE_NGINX_EXTERNAL_HTTPS_PORT}:443
+        volumes:
+            - ./site:/var/www/site
+            - dist:/var/dist
+        links:
+            - php
+        volumes_from:
+            - app
+        networks:
+            - tvtropesapp
+
+    # The php container will receive requests from the nginx container on port 9000
+    # connect to the percona container for DB connections
+    # and server content from the app container
+    php:
+        container_name: ${COMPOSE_PROJECT_NAME}-php-cont
+        build: ./build/php/
+        expose:
+            - 9000
+        environment:
+            XDEBUG_CONFIG: remote_host=${COMPOSE_PHP_EXTERNAL_DEBUG_HOST}
+        volumes:
+            - ./site:/var/www/site
+            - ./bin:/var/www/bin
+            - ./trope_videos:/var/www/trope_videos
+        links:
+            - percona
+            - devdb
+        volumes_from:
+            - app
+        networks:
+            - tvtropesapp
+
+    # The composer container will be used to execute composer for dependency management
+    # Think PHP Composer, NOT Docker Composer
+    composer:
+        container_name: ${COMPOSE_PROJECT_NAME}-composer-cont
+        build:
+            context: .
+            dockerfile: ./build/composer/Dockerfile
+        command: install
+        volumes:
+            - ./site:/var/www/site
+        networks:
+            - tvtropesapp
+
+    # the app container holds the site
+    # it is based on the php container for reuse, but dbes not execute PHP and exists
+    # right away after executing "true"
+    app:
+        container_name: ${COMPOSE_PROJECT_NAME}-app-cont
+        image: php:7.0-fpm
+        command: "true"
+        networks:
+            - tvtropesapp
+
+    # The percona container provides DB server to the nginx and php containers
+    # it also stores DB data on the data container
+    percona:
+        container_name: ${COMPOSE_PROJECT_NAME}-percona-cont
+        image: percona:5.5
+        volumes_from:
+            - data
+        links:
+            - devdb
+        ports:
+            - ${COMPOSE_MYSQL_EXTERNALPORT}:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: ${COMPOSE_MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${COMPOSE_MYSQL_DATABASE}
+            MYSQL_USER: ${COMPOSE_MYSQL_USER}
+            MYSQL_PASSWORD: ${COMPOSE_MYSQL_PASSWORD}
+        networks:
+            - tvtropesapp
+
+    # The devdb container provides a means of tunneling to a DB on a remote servers.
+    # We use it to connect to dev server's DB via local port exposed by the container.
+    devdb:
+        container_name: ${COMPOSE_PROJECT_NAME}-devdb-cont
+        build: ./build/devdb/
+        ports:
+            - ${SSH_TUNNEL_DB_LOCAL_PORT}:${SSH_TUNNEL_DB_REMOTE_PORT}
+        expose:
+            - ${SSH_TUNNEL_DB_REMOTE_PORT}
+        command: ["sshpass", "-p", "${SSH_TUNNEL_PASSWORD}", "ssh", "-tt", "-o", "StrictHostKeyChecking=no", "-p", "${SSH_TUNNEL_DB_REMOTE_SSH_PORT}", "-L", "*:${SSH_TUNNEL_DB_REMOTE_PORT}:localhost:${SSH_TUNNEL_DB_REMOTE_PORT}", "${SSH_TUNNEL_DB_REMOTE_USER}@${SSH_TUNNEL_DB_REMOTE_HOST}"]
+        networks:
+            - tvtropesapp
+
+    # The data container is used to store the DB data served
+    # by the percona container
+    data:
+        container_name: ${COMPOSE_PROJECT_NAME}-data-cont
+        image: alpine:latest
+        volumes:
+            - ./build/percona/data:/var/lib/mysql
+        command: "true"
+        networks:
+            - tvtropesapp
+
+    # The elasticsearch container runs the search indexing server and stores data
+    # on the data container
+    elasticsearch:
+        container_name: ${COMPOSE_PROJECT_NAME}-elasticsearch-cont
+        image: elasticsearch:2.4
+        volumes_from:
+            - data
+        volumes:
+            - ./build/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/elasticsearch.yml
+        links:
+            - devdb
+        ports:
+            - 9200:9200
+        networks:
+            - tvtropesapp
+
+    node:
+        container_name: ${COMPOSE_PROJECT_NAME}-node-cont
+        build:
+            context: .
+            dockerfile: ./build/node/Dockerfile
+#        ports:
+#            - 8080:8080
+        volumes:
+            - .:/var/www/assets:rw
+            - node_modules:/var/www/assets/node_modules
+            - dist:/var/www/assets/dist
+        networks:
+            - tvtropesapp
+
+volumes:
+    node_modules:
+    dist:
+
+networks:
+    tvtropesapp:
